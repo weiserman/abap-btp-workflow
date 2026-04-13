@@ -1,0 +1,38 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: {
+  typeName: 'Approval Rule',
+  typeNamePlural: 'Approval Rules',
+  title: { type: #STANDARD, value: 'rule_description' },
+  description: { type: #STANDARD, value: 'approver_role' }
+}
+annotate entity ZC_APPR_RULE with
+{
+
+  @UI.hidden: true
+  rule_id;
+
+  @UI.hidden: true
+  object_type;
+
+  @UI.lineItem: [{ position: 10, importance: #HIGH, label: 'Level' }]
+  approver_level;
+
+  @UI.lineItem: [{ position: 20, importance: #HIGH, label: 'Approver Role' }]
+  approver_role;
+
+  @UI.lineItem: [{ position: 30, importance: #HIGH, label: 'Description' }]
+  rule_description;
+
+  @UI.lineItem: [{ position: 40, importance: #MEDIUM, label: 'Active' }]
+  is_active;
+
+  @UI.lineItem: [{ position: 50, importance: #LOW, label: 'Condition Field' }]
+  condition_field;
+
+  @UI.lineItem: [{ position: 60, importance: #LOW, label: 'Operator' }]
+  condition_operator;
+
+  @UI.lineItem: [{ position: 70, importance: #LOW, label: 'Value' }]
+  condition_value;
+
+}

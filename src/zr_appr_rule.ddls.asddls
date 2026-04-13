@@ -1,11 +1,13 @@
-@AccessControl.authorizationCheck: #CHECK
+@AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Approval Routing Rule'
-define root view entity ZR_APPR_RULE
+define view entity ZR_APPR_RULE
   as select from zappr_rule
+  association to parent ZR_APPR_OBJ_TYPE as _ObjectType
+    on $projection.object_type = _ObjectType.object_type
 {
   key rule_id,
-
       object_type,
+
       rule_description,
       condition_field,
       condition_operator,
@@ -14,6 +16,16 @@ define root view entity ZR_APPR_RULE
       approver_level,
       is_active,
 
+      @Semantics.user.createdBy: true
+      created_by,
+      @Semantics.systemDateTime.createdAt: true
+      created_at,
+      @Semantics.user.lastChangedBy: true
+      last_changed_by,
+      @Semantics.systemDateTime.lastChangedAt: true
+      last_changed_at,
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
-      local_last_changed
+      local_last_changed,
+
+      _ObjectType
 }

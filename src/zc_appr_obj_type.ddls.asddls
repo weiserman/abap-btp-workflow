@@ -29,5 +29,8 @@ define root view entity ZC_APPR_OBJ_TYPE
       last_changed_by,
       @EndUserText.label: 'Last Changed At'
       last_changed_at,
-      local_last_changed
+      local_last_changed,
+
+      _Rule : redirected to composition child ZC_APPR_RULE,
+      _Instance
 }

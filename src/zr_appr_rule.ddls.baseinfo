@@ -6,7 +6,9 @@
 "ZAPPR_RULE"
 ],
 "ASSOCIATED":
-[],
+[
+"ZR_APPR_OBJ_TYPE"
+],
 "BASE":
 [],
 "ANNO_REF":

@@ -13,4 +13,14 @@ define behavior for ZC_APPR_OBJ_TYPE alias ObjectType
   use action Discard;
   use action Resume;
   use action Prepare;
+
+  use association _Rule { create; with draft; }
+}
+
+define behavior for ZC_APPR_RULE alias ApprovalRule
+{
+  use update;
+  use delete;
+
+  use association _ObjectType { with draft; }
 }

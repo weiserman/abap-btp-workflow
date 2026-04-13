@@ -6,9 +6,15 @@
 "ZR_APPR_OBJ_TYPE"
 ],
 "ASSOCIATED":
-[],
+[
+"ZC_APPR_RULE",
+"ZR_APPR_INSTANCE",
+"ZR_APPR_RULE"
+],
 "BASE":
-[],
+[
+"ZR_APPR_OBJ_TYPE"
+],
 "ANNO_REF":
 [],
 "SCALAR_FUNCTION":

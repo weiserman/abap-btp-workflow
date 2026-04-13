@@ -1,4 +1,6 @@
 @EndUserText.label: 'Approval - Object Type Config Service'
 define service ZSD_APPR_OBJ_TYPE {
   expose ZC_APPR_OBJ_TYPE as ObjectType;
+  expose ZC_APPR_RULE     as ApprovalRule;
+  expose ZC_APPR_INSTANCE as ApprovalInstance;
 }

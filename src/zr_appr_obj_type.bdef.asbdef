@@ -24,11 +24,52 @@ authorization master ( global )
   draft action Resume;
   draft determine action Prepare;
 
+  association _Rule { create; with draft; }
+
   mapping for zappr_obj_type corresponding
   {
     object_type = object_type;
     object_type_name = object_type_name;
     object_description = object_description;
+    is_active = is_active;
+    created_by = created_by;
+    created_at = created_at;
+    last_changed_by = last_changed_by;
+    last_changed_at = last_changed_at;
+    local_last_changed = local_last_changed;
+  }
+}
+
+define behavior for ZR_APPR_RULE alias ApprovalRule
+persistent table zappr_rule
+draft table zappr_d_rule
+etag master local_last_changed
+lock dependent by _ObjectType
+authorization dependent by _ObjectType
+
+{
+  field ( readonly, numbering : managed )
+    rule_id;
+
+  field ( readonly )
+    object_type,
+    created_by, created_at, last_changed_by, last_changed_at;
+
+  update;
+  delete;
+
+  association _ObjectType { with draft; }
+
+  mapping for zappr_rule corresponding
+  {
+    rule_id = rule_id;
+    object_type = object_type;
+    rule_description = rule_description;
+    condition_field = condition_field;
+    condition_operator = condition_operator;
+    condition_value = condition_value;
+    approver_role = approver_role;
+    approver_level = approver_level;
     is_active = is_active;
     created_by = created_by;
     created_at = created_at;
