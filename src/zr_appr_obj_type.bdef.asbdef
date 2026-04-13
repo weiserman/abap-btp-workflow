@@ -1,0 +1,39 @@
+managed implementation in class ZBP_R_APPR_OBJ_TYPE unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZR_APPR_OBJ_TYPE alias ObjectType
+persistent table zappr_obj_type
+draft table zappr_d_objtyp
+etag master local_last_changed
+lock master total etag last_changed_at
+authorization master ( global )
+
+{
+  field ( readonly ) created_by, created_at, last_changed_by, last_changed_at;
+  field ( mandatory : create ) object_type;
+  field ( readonly : update ) object_type;
+
+  create;
+  update;
+  delete;
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for zappr_obj_type corresponding
+  {
+    object_type = object_type;
+    object_type_name = object_type_name;
+    object_description = object_description;
+    is_active = is_active;
+    created_by = created_by;
+    created_at = created_at;
+    last_changed_by = last_changed_by;
+    last_changed_at = last_changed_at;
+    local_last_changed = local_last_changed;
+  }
+}

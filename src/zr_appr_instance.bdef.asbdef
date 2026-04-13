@@ -10,8 +10,10 @@ lock master total etag last_changed_at
 authorization master ( global )
 
 {
+  field ( readonly, numbering : managed )
+    approval_id;
+
   field ( readonly )
-    approval_id,
     approval_number,
     current_status,
     approver_role,
@@ -30,8 +32,7 @@ authorization master ( global )
 
   field ( mandatory : create )
     description,
-    object_type,
-    object_key;
+    object_type;
 
   create;
   update;
@@ -99,8 +100,10 @@ lock dependent by _Instance
 authorization dependent by _Instance
 
 {
+  field ( readonly, numbering : managed )
+    step_id;
+
   field ( readonly )
-    step_id,
     approval_id,
     sequence,
     from_status,

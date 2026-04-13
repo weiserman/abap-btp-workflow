@@ -3,13 +3,10 @@
 {
 "FROM":
 [
-"ZAPPR_INSTANCE",
 "ZAPPR_OBJ_TYPE"
 ],
 "ASSOCIATED":
-[
-"ZR_APPR_STEP"
-],
+[],
 "BASE":
 [],
 "ANNO_REF":

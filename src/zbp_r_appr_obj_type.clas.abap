@@ -1,0 +1,5 @@
+CLASS zbp_r_appr_obj_type DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zr_appr_obj_type.
+ENDCLASS.
+
+CLASS zbp_r_appr_obj_type IMPLEMENTATION.
+ENDCLASS.

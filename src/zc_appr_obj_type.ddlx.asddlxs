@@ -1,0 +1,60 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: {
+  typeName: 'Object Type',
+  typeNamePlural: 'Object Types',
+  title: { type: #STANDARD, value: 'object_type' },
+  description: { type: #STANDARD, value: 'object_type_name' }
+}
+annotate entity ZC_APPR_OBJ_TYPE with
+{
+
+  @UI.facet: [
+    { id: 'General',
+      type: #COLLECTION,
+      label: 'General',
+      position: 10 },
+    { id: 'Details',
+      parentId: 'General',
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'Details',
+      label: 'Object Type Details',
+      position: 10 },
+    { id: 'Admin',
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'Admin',
+      label: 'Admin',
+      position: 20 }
+  ]
+
+  @UI.lineItem: [{ position: 10, importance: #HIGH, label: 'Object Type' }]
+  @UI.selectionField: [{ position: 10 }]
+  @UI.fieldGroup: [{ qualifier: 'Details', position: 10, label: 'Object Type Code' }]
+  object_type;
+
+  @UI.lineItem: [{ position: 20, importance: #HIGH, label: 'Name' }]
+  @UI.selectionField: [{ position: 20 }]
+  @UI.fieldGroup: [{ qualifier: 'Details', position: 20, label: 'Object Type Name' }]
+  object_type_name;
+
+  @UI.lineItem: [{ position: 30, importance: #MEDIUM, label: 'Description' }]
+  @UI.fieldGroup: [{ qualifier: 'Details', position: 30, label: 'Description' }]
+  object_description;
+
+  @UI.lineItem: [{ position: 40, importance: #HIGH, label: 'Active' }]
+  @UI.selectionField: [{ position: 30 }]
+  @UI.fieldGroup: [{ qualifier: 'Details', position: 40, label: 'Active' }]
+  is_active;
+
+  @UI.fieldGroup: [{ qualifier: 'Admin', position: 10, label: 'Created By' }]
+  created_by;
+
+  @UI.fieldGroup: [{ qualifier: 'Admin', position: 20, label: 'Created At' }]
+  created_at;
+
+  @UI.fieldGroup: [{ qualifier: 'Admin', position: 30, label: 'Last Changed By' }]
+  last_changed_by;
+
+  @UI.fieldGroup: [{ qualifier: 'Admin', position: 40, label: 'Last Changed At' }]
+  last_changed_at;
+
+}

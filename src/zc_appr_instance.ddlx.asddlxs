@@ -67,11 +67,13 @@ annotate entity ZC_APPR_INSTANCE with
   @UI.fieldGroup: [{ qualifier: 'ObjectRef', position: 20, label: 'Object Name' }]
   object_name;
 
-  @UI.lineItem: [{ position: 30, importance: #HIGH, criticality: 'StatusCriticality', label: 'Status' }]
-  @UI.selectionField: [{ position: 30 }]
-  @UI.textArrangement: #TEXT_ONLY
-  @UI.identification: [{ position: 20, criticality: 'StatusCriticality' }]
+  @UI.hidden: true
   current_status;
+
+  @UI.lineItem: [{ position: 30, importance: #HIGH, criticality: 'StatusCriticality', criticalityRepresentation: #WITHOUT_ICON, label: 'Status' }]
+  @UI.selectionField: [{ position: 30 }]
+  @UI.identification: [{ position: 20 }]
+  StatusText;
 
   @UI.hidden: true
   StatusCriticality;

@@ -3,6 +3,8 @@
 define root view entity ZR_APPR_INSTANCE
   as select from zappr_instance
   composition [0..*] of ZR_APPR_STEP as _Step
+  association [0..1] to zappr_obj_type as _ObjType
+    on $projection.object_type = _ObjType.object_type
 {
   key approval_id,
 
@@ -11,6 +13,8 @@ define root view entity ZR_APPR_INSTANCE
       object_type,
       object_key,
       object_name,
+
+      _ObjType.object_type_name as ObjectTypeName,
 
       current_status,
       approver_role,
