@@ -1,0 +1,29 @@
+projection;
+strict;
+use draft;
+
+define behavior for ZC_APPR_INSTANCE alias ApprovalInstance
+{
+  use create;
+  use update;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+  use action submit;
+  use action approve;
+  use action reject;
+  use action withdraw;
+  use action resubmit;
+
+  use association _Step { create; }
+}
+
+define behavior for ZC_APPR_STEP alias ApprovalStep
+{
+  use update;
+  use association _Instance;
+}

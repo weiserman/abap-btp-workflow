@@ -1,0 +1,129 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: {
+  typeName: 'Approval Request',
+  typeNamePlural: 'Approval Requests',
+  title: { type: #STANDARD, value: 'approval_number' },
+  description: { type: #STANDARD, value: 'description' }
+}
+annotate entity ZC_APPR_INSTANCE with
+{
+
+  @UI.facet: [
+    { id: 'GeneralInfo',
+      type: #COLLECTION,
+      label: 'General Information',
+      position: 10 },
+    { id: 'RequestDetails',
+      parentId: 'GeneralInfo',
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'Request',
+      label: 'Request Details',
+      position: 10 },
+    { id: 'ObjectRef',
+      parentId: 'GeneralInfo',
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'ObjectRef',
+      label: 'Business Object Reference',
+      position: 15 },
+    { id: 'ApprovalDetails',
+      parentId: 'GeneralInfo',
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'Approval',
+      label: 'Current Approval Status',
+      position: 20 },
+    { id: 'DecisionDetails',
+      parentId: 'GeneralInfo',
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'Decision',
+      label: 'Decision',
+      position: 30 },
+    { id: 'AdminInfo',
+      type: #COLLECTION,
+      label: 'Admin',
+      position: 30 },
+    { id: 'AdminFields',
+      parentId: 'AdminInfo',
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'Admin',
+      label: 'Change Log',
+      position: 10 },
+    { id: 'StepTable',
+      type: #LINEITEM_REFERENCE,
+      targetElement: '_Step',
+      label: 'Approval History',
+      position: 40 }
+  ]
+
+  @UI.hidden: true
+  approval_id;
+
+  @UI.lineItem: [{ position: 10, importance: #HIGH, label: 'Approval #' }]
+  @UI.selectionField: [{ position: 10 }]
+  @UI.identification: [{ position: 10 }]
+  approval_number;
+
+  @UI.lineItem: [{ position: 20, importance: #HIGH, label: 'Object Name' }]
+  @UI.selectionField: [{ position: 20 }]
+  @UI.fieldGroup: [{ qualifier: 'ObjectRef', position: 20, label: 'Object Name' }]
+  object_name;
+
+  @UI.lineItem: [{ position: 30, importance: #HIGH, criticality: 'StatusCriticality', label: 'Status' }]
+  @UI.selectionField: [{ position: 30 }]
+  @UI.textArrangement: #TEXT_ONLY
+  @UI.identification: [{ position: 20, criticality: 'StatusCriticality' }]
+  current_status;
+
+  @UI.hidden: true
+  StatusCriticality;
+
+  @UI.lineItem: [{ position: 35, importance: #MEDIUM, label: 'Description' }]
+  @UI.fieldGroup: [{ qualifier: 'Request', position: 10, label: 'Description' }]
+  description;
+
+  @UI.fieldGroup: [{ qualifier: 'Request', position: 20, label: 'Justification' }]
+  justification;
+
+  @UI.lineItem: [{ position: 40, importance: #MEDIUM, label: 'Approver Role' }]
+  @UI.fieldGroup: [{ qualifier: 'Approval', position: 10, label: 'Current Approver Role' }]
+  approver_role;
+
+  @UI.fieldGroup: [{ qualifier: 'Approval', position: 20, label: 'Approval Level' }]
+  approver_level;
+
+  @UI.lineItem: [{ position: 50, importance: #MEDIUM, label: 'Requested By' }]
+  @UI.selectionField: [{ position: 40 }]
+  @UI.fieldGroup: [{ qualifier: 'Request', position: 30, label: 'Requested By' }]
+  requested_by;
+
+  @UI.lineItem: [{ position: 60, importance: #LOW, label: 'Requested At' }]
+  @UI.fieldGroup: [{ qualifier: 'Request', position: 40, label: 'Requested At' }]
+  requested_at;
+
+  @UI.fieldGroup: [{ qualifier: 'ObjectRef', position: 10, label: 'Object Type' }]
+  object_type;
+
+  @UI.hidden: true
+  object_key;
+
+  @UI.fieldGroup: [{ qualifier: 'Decision', position: 10, label: 'Decided By' }]
+  decided_by;
+
+  @UI.fieldGroup: [{ qualifier: 'Decision', position: 20, label: 'Decided At' }]
+  decided_at;
+
+  @UI.fieldGroup: [{ qualifier: 'Decision', position: 30, label: 'Decision Comment' }]
+  decision_comment;
+
+  @UI.fieldGroup: [{ qualifier: 'Admin', position: 10, label: 'Created By' }]
+  created_by;
+
+  @UI.fieldGroup: [{ qualifier: 'Admin', position: 20, label: 'Created At' }]
+  created_at;
+
+  @UI.fieldGroup: [{ qualifier: 'Admin', position: 30, label: 'Last Changed By' }]
+  last_changed_by;
+
+  @UI.fieldGroup: [{ qualifier: 'Admin', position: 40, label: 'Last Changed At' }]
+  last_changed_at;
+
+}

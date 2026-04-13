@@ -1,0 +1,36 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: {
+  typeName: 'Approval Step',
+  typeNamePlural: 'Approval Steps'
+}
+annotate entity ZC_APPR_STEP with
+{
+
+  @UI.hidden: true
+  step_id;
+
+  @UI.hidden: true
+  approval_id;
+
+  @UI.lineItem: [{ position: 10, label: 'Step #' }]
+  sequence;
+
+  @UI.lineItem: [{ position: 20, label: 'From Status' }]
+  FromStatusText;
+
+  @UI.lineItem: [{ position: 30, label: 'To Status' }]
+  ToStatusText;
+
+  @UI.lineItem: [{ position: 40, label: 'Approver Role' }]
+  approver_role;
+
+  @UI.lineItem: [{ position: 50, label: 'Performed By' }]
+  performed_by;
+
+  @UI.lineItem: [{ position: 60, label: 'Performed At' }]
+  performed_at;
+
+  @UI.lineItem: [{ position: 70, label: 'Comment' }]
+  step_comment;
+
+}

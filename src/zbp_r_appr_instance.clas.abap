@@ -1,0 +1,5 @@
+CLASS zbp_r_appr_instance DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zr_appr_instance.
+ENDCLASS.
+
+CLASS zbp_r_appr_instance IMPLEMENTATION.
+ENDCLASS.
