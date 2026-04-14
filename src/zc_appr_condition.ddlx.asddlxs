@@ -1,0 +1,36 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: {
+  typeName: 'Rule Condition',
+  typeNamePlural: 'Rule Conditions',
+  title: { type: #STANDARD, value: 'field_name' },
+  description: { type: #STANDARD, value: 'value_low' }
+}
+annotate entity ZC_APPR_CONDITION with
+{
+
+  @UI.hidden: true
+  condition_uuid;
+
+  @UI.hidden: true
+  rule_uuid;
+
+  @UI.hidden: true
+  object_type;
+
+  @UI.lineItem: [{ position: 10, importance: #HIGH, label: 'Field' }]
+  @UI.identification: [{ position: 10 }]
+  field_name;
+
+  @UI.lineItem: [{ position: 20, importance: #HIGH, label: 'Operator' }]
+  @UI.identification: [{ position: 20 }]
+  operator;
+
+  @UI.lineItem: [{ position: 30, importance: #HIGH, label: 'Value' }]
+  @UI.identification: [{ position: 30 }]
+  value_low;
+
+  @UI.lineItem: [{ position: 40, importance: #MEDIUM, label: 'Value High' }]
+  @UI.identification: [{ position: 40 }]
+  value_high;
+
+}

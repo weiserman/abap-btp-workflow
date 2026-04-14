@@ -28,6 +28,15 @@ define view entity ZC_APPR_RULE
       @EndUserText.label: 'Level'
       approver_level,
 
+      @EndUserText.label: 'Priority'
+      priority,
+
+      @EndUserText.label: 'Agent Type'
+      agent_type,
+
+      @EndUserText.label: 'Agent ID'
+      agent_id,
+
       @EndUserText.label: 'Active'
       is_active,
 
@@ -41,5 +50,6 @@ define view entity ZC_APPR_RULE
       last_changed_at,
       local_last_changed,
 
-      _ObjectType : redirected to parent ZC_APPR_OBJ_TYPE
+      _ObjectType : redirected to parent ZC_APPR_OBJ_TYPE,
+      _Condition  : redirected to composition child ZC_APPR_CONDITION
 }

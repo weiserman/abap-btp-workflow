@@ -2,6 +2,7 @@
 @EndUserText.label: 'Approval Routing Rule'
 define view entity ZR_APPR_RULE
   as select from zappr_rule
+  composition [0..*] of ZR_APPR_CONDITION as _Condition
   association to parent ZR_APPR_OBJ_TYPE as _ObjectType
     on $projection.object_type = _ObjectType.object_type
 {
@@ -14,6 +15,9 @@ define view entity ZR_APPR_RULE
       condition_value,
       approver_role,
       approver_level,
+      priority,
+      agent_type,
+      agent_id,
       is_active,
 
       @Semantics.user.createdBy: true
@@ -27,5 +31,6 @@ define view entity ZR_APPR_RULE
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
       local_last_changed,
 
-      _ObjectType
+      _ObjectType,
+      _Condition
 }

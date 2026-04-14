@@ -23,4 +23,14 @@ define behavior for ZC_APPR_RULE alias ApprovalRule
   use delete;
 
   use association _ObjectType { with draft; }
+  use association _Condition { create; with draft; }
+}
+
+define behavior for ZC_APPR_CONDITION alias Condition
+{
+  use update;
+  use delete;
+
+  use association _Rule { with draft; }
+  use association _ObjectType;
 }
