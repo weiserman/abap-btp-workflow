@@ -2,6 +2,7 @@ CLASS zcl_appr_seed DEFINITION PUBLIC FINAL CREATE PUBLIC.
   PUBLIC SECTION.
     INTERFACES if_oo_adt_classrun.
   PRIVATE SECTION.
+    METHODS seed_agent_types  IMPORTING out TYPE REF TO if_oo_adt_classrun_out.
     METHODS seed_object_types IMPORTING out TYPE REF TO if_oo_adt_classrun_out.
     METHODS seed_rules        IMPORTING out TYPE REF TO if_oo_adt_classrun_out.
     METHODS insert_rule
@@ -10,7 +11,6 @@ CLASS zcl_appr_seed DEFINITION PUBLIC FINAL CREATE PUBLIC.
                 iv_priority    TYPE zappr_rule-priority
                 iv_agent_type  TYPE zappr_rule-agent_type
                 iv_agent_id    TYPE zappr_rule-agent_id
-                iv_approver_role TYPE zappr_rule-approver_role OPTIONAL
                 iv_description TYPE zappr_rule-rule_description
       RETURNING VALUE(rv_rule_id) TYPE sysuuid_x16.
     METHODS insert_condition
@@ -26,12 +26,27 @@ ENDCLASS.
 CLASS zcl_appr_seed IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
+    seed_agent_types( out ).
+    out->write( '' ).
     seed_object_types( out ).
     out->write( '' ).
     seed_rules( out ).
     COMMIT WORK AND WAIT.
     out->write( '' ).
     out->write( '=== Seed Complete ===' ).
+  ENDMETHOD.
+
+
+  METHOD seed_agent_types.
+
+    out->write( '=== Seeding Agent Types ===' ).
+    DELETE FROM zappr_agent_type.
+    INSERT zappr_agent_type FROM TABLE @( VALUE #(
+      ( agent_type = 'USER' description = 'Named User'    is_active = abap_true )
+      ( agent_type = 'ROLE' description = 'Business Role' is_active = abap_true )
+    ) ).
+    out->write( |Inserted { sy-dbcnt } agent types.| ).
+
   ENDMETHOD.
 
 
@@ -95,12 +110,6 @@ CLASS zcl_appr_seed IMPLEMENTATION.
       iv_rule_id = lv_r iv_object_type = 'PROC_PLAN'
       iv_field_name = 'DEPARTMENT' iv_operator = 'EQ' iv_value_low = 'IT' ).
 
-    insert_rule(
-      iv_object_type = 'PROC_PLAN' iv_level = 1 iv_priority = 99
-      iv_agent_type  = 'ROLE' iv_agent_id = 'ZPROCPLAN_APPROVER'
-      iv_approver_role = 'ZPROCPLAN_APPROVER'
-      iv_description = 'PROC_PLAN L1 - Default (any department)' ).
-
     " ── PROC_PLAN Level 2: amount-based escalation ──
     lv_r = insert_rule(
       iv_object_type = 'PROC_PLAN' iv_level = 2 iv_priority = 10
@@ -109,49 +118,6 @@ CLASS zcl_appr_seed IMPLEMENTATION.
     insert_condition(
       iv_rule_id = lv_r iv_object_type = 'PROC_PLAN'
       iv_field_name = 'TOTAL_AMOUNT' iv_operator = 'GE' iv_value_low = '100000' ).
-
-    insert_rule(
-      iv_object_type = 'PROC_PLAN' iv_level = 2 iv_priority = 99
-      iv_agent_type  = 'ROLE' iv_agent_id = 'ZPROCPLAN_FINANCE'
-      iv_approver_role = 'ZPROCPLAN_FINANCE'
-      iv_description = 'PROC_PLAN L2 - Finance Sign-off (standard)' ).
-
-    " ── Other object types: role-based catch-alls ──
-    insert_rule(
-      iv_object_type = 'PO' iv_level = 1 iv_priority = 99
-      iv_agent_type  = 'ROLE' iv_agent_id = 'ZPO_APPROVER'
-      iv_approver_role = 'ZPO_APPROVER'
-      iv_description = 'PO L1 - Purchasing Manager' ).
-
-    insert_rule(
-      iv_object_type = 'PR' iv_level = 1 iv_priority = 99
-      iv_agent_type  = 'ROLE' iv_agent_id = 'ZPR_APPROVER'
-      iv_approver_role = 'ZPR_APPROVER'
-      iv_description = 'PR L1 - Department Head' ).
-
-    insert_rule(
-      iv_object_type = 'CONTRACT' iv_level = 1 iv_priority = 99
-      iv_agent_type  = 'ROLE' iv_agent_id = 'ZCONTRACT_LEGAL'
-      iv_approver_role = 'ZCONTRACT_LEGAL'
-      iv_description = 'CONTRACT L1 - Legal Review' ).
-
-    insert_rule(
-      iv_object_type = 'CONTRACT' iv_level = 2 iv_priority = 99
-      iv_agent_type  = 'ROLE' iv_agent_id = 'ZCONTRACT_CFO'
-      iv_approver_role = 'ZCONTRACT_CFO'
-      iv_description = 'CONTRACT L2 - CFO Approval' ).
-
-    insert_rule(
-      iv_object_type = 'CAPEX' iv_level = 1 iv_priority = 99
-      iv_agent_type  = 'ROLE' iv_agent_id = 'ZCAPEX_FINANCE'
-      iv_approver_role = 'ZCAPEX_FINANCE'
-      iv_description = 'CAPEX L1 - Finance Controller' ).
-
-    insert_rule(
-      iv_object_type = 'CAPEX' iv_level = 2 iv_priority = 99
-      iv_agent_type  = 'ROLE' iv_agent_id = 'ZCAPEX_BOARD'
-      iv_approver_role = 'ZCAPEX_BOARD'
-      iv_description = 'CAPEX L2 - Board Approval' ).
 
     SELECT COUNT(*) FROM zappr_rule      INTO @DATA(lv_rules).
     SELECT COUNT(*) FROM zappr_condition INTO @DATA(lv_conds).
@@ -168,7 +134,6 @@ CLASS zcl_appr_seed IMPLEMENTATION.
       rule_id          = rv_rule_id
       object_type      = iv_object_type
       rule_description = iv_description
-      approver_role    = iv_approver_role
       approver_level   = iv_level
       priority         = iv_priority
       agent_type       = iv_agent_type

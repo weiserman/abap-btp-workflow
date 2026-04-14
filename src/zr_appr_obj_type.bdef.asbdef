@@ -66,10 +66,6 @@ authorization dependent by _ObjectType
     rule_id = rule_id;
     object_type = object_type;
     rule_description = rule_description;
-    condition_field = condition_field;
-    condition_operator = condition_operator;
-    condition_value = condition_value;
-    approver_role = approver_role;
     approver_level = approver_level;
     priority = priority;
     agent_type = agent_type;

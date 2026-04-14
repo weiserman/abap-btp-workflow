@@ -10,10 +10,6 @@ define view entity ZR_APPR_RULE
       object_type,
 
       rule_description,
-      condition_field,
-      condition_operator,
-      condition_value,
-      approver_role,
       approver_level,
       priority,
       agent_type,

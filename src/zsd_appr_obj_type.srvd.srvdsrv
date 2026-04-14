@@ -4,4 +4,6 @@ define service ZSD_APPR_OBJ_TYPE {
   expose ZC_APPR_RULE      as ApprovalRule;
   expose ZC_APPR_CONDITION as RuleCondition;
   expose ZC_APPR_INSTANCE  as ApprovalInstance;
+  expose ZI_APPR_ROLE_VH   as RoleValueHelp;
+  expose ZI_APPR_AGENT_TYPE_VH as AgentTypeValueHelp;
 }

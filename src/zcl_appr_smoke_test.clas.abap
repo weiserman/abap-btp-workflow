@@ -51,13 +51,13 @@ CLASS zcl_appr_smoke_test IMPLEMENTATION.
 
     run_case(
       out        = out
-      iv_label   = 'Test 4 L1 - MARKETING (catch-all)'
+      iv_label   = 'Test 4 L1 - MARKETING (no catch-all, expect exception)'
       iv_object  = 'PROC_PLAN'
       iv_level   = 1
       it_context = VALUE #(
         ( field_name = 'DEPARTMENT'   field_value = 'MARKETING' )
         ( field_name = 'TOTAL_AMOUNT' field_value = '10000' ) )
-      iv_expected = 'ROLE/ZPROCPLAN_APPROVER' ).
+      iv_expected = 'EXCEPTION' ).
 
     run_case(
       out        = out
@@ -71,13 +71,13 @@ CLASS zcl_appr_smoke_test IMPLEMENTATION.
 
     run_case(
       out        = out
-      iv_label   = 'Test 6 L2 - normal amount (catch-all)'
+      iv_label   = 'Test 6 L2 - normal amount (no catch-all, expect exception)'
       iv_object  = 'PROC_PLAN'
       iv_level   = 2
       it_context = VALUE #(
         ( field_name = 'DEPARTMENT'   field_value = 'IT' )
         ( field_name = 'TOTAL_AMOUNT' field_value = '30000' ) )
-      iv_expected = 'ROLE/ZPROCPLAN_FINANCE' ).
+      iv_expected = 'EXCEPTION' ).
 
     run_case(
       out        = out
@@ -87,14 +87,6 @@ CLASS zcl_appr_smoke_test IMPLEMENTATION.
       it_context = VALUE #(
         ( field_name = 'DEPARTMENT' field_value = 'X' ) )
       iv_expected = 'EXCEPTION' ).
-
-    run_case(
-      out        = out
-      iv_label   = 'Test 8 L1 - PO role-based'
-      iv_object  = 'PO'
-      iv_level   = 1
-      it_context = VALUE #( )
-      iv_expected = 'ROLE/ZPO_APPROVER' ).
 
     out->write( '' ).
     out->write( '=== Done ===' ).

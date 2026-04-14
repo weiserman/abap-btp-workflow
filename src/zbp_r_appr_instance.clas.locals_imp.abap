@@ -50,7 +50,7 @@ CLASS lhc_ApprovalInstance DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING iv_object_type    TYPE zappr_instance-object_type
                 iv_object_key     TYPE zappr_instance-object_key
                 iv_level          TYPE zappr_rule-approver_level DEFAULT 1
-      EXPORTING ev_approver_role  TYPE zappr_rule-approver_role
+      EXPORTING ev_approver_role  TYPE zappr_instance-approver_role
                 ev_approver_level TYPE zappr_rule-approver_level.
 
     METHODS check_user_has_role
@@ -483,8 +483,8 @@ CLASS lhc_ApprovalInstance IMPLEMENTATION.
 
   METHOD resolve_approver_role.
     CLEAR: ev_approver_role, ev_approver_level.
-    SELECT SINGLE approver_role, approver_level
-      FROM zappr_rule
+    SELECT SINGLE FROM zappr_rule
+      FIELDS agent_id, approver_level
       WHERE object_type    = @iv_object_type
         AND is_active      = @abap_true
         AND approver_level = @iv_level

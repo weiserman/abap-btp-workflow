@@ -32,16 +32,4 @@ annotate entity ZC_APPR_RULE with
   @UI.lineItem: [{ position: 60, importance: #MEDIUM, label: 'Active' }]
   is_active;
 
-  @UI.lineItem: [{ position: 70, importance: #LOW, label: 'Legacy Role' }]
-  approver_role;
-
-  @UI.hidden: true
-  condition_field;
-
-  @UI.hidden: true
-  condition_operator;
-
-  @UI.hidden: true
-  condition_value;
-
 }

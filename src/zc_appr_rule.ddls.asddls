@@ -13,18 +13,6 @@ define view entity ZC_APPR_RULE
       @EndUserText.label: 'Description'
       rule_description,
 
-      @EndUserText.label: 'Condition Field'
-      condition_field,
-
-      @EndUserText.label: 'Operator'
-      condition_operator,
-
-      @EndUserText.label: 'Condition Value'
-      condition_value,
-
-      @EndUserText.label: 'Approver Role'
-      approver_role,
-
       @EndUserText.label: 'Level'
       approver_level,
 
@@ -32,9 +20,16 @@ define view entity ZC_APPR_RULE
       priority,
 
       @EndUserText.label: 'Agent Type'
+      @Consumption.valueHelpDefinition: [{ entity: { name: 'ZI_APPR_AGENT_TYPE_VH', element: 'agent_type' } }]
       agent_type,
 
       @EndUserText.label: 'Agent ID'
+      @Consumption.valueHelpDefinition: [{
+        entity: { name: 'ZI_APPR_AGENT_VH', element: 'agent_id' },
+        additionalBinding: [
+          { localElement: 'agent_type', element: 'agent_type' }
+        ]
+      }]
       agent_id,
 
       @EndUserText.label: 'Active'
