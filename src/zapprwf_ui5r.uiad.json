@@ -1,0 +1,34 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "Workflow Application",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD",
+    "targetMappingTitle": "Workflow"
+  },
+  "ui5AppDetails": {
+    "appId": "com.decabase.wf"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_1BFE00273079BBC17CD34770F69E7DBEDCACBBE2_TM",
+    "semanticObject": "Workflow",
+    "action": "Manage",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_1BFE00273079BBC17CD34770F69E7DBEDCACBBE2_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Workflow"
+      }
+    }
+  ]
+}
