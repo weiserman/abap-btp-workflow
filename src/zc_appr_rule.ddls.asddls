@@ -1,6 +1,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Approval Rule - Projection'
 @Metadata.allowExtensions: true
+@ObjectModel.representativeKey: 'rule_id'
 define view entity ZC_APPR_RULE
   as projection on ZR_APPR_RULE
 {

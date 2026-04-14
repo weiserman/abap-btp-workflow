@@ -15,10 +15,16 @@ annotate entity ZC_APPR_RULE with
   object_type;
 
   @UI.facet: [
-    { id:       'Main',
-      type:     #IDENTIFICATION_REFERENCE,
-      label:    'Rule Configuration',
+    { id:       'General',
+      type:     #COLLECTION,
+      label:    'General',
       position: 10 },
+    { id:            'RuleDetails',
+      parentId:      'General',
+      type:          #FIELDGROUP_REFERENCE,
+      targetQualifier: 'Main',
+      label:         'Rule Configuration',
+      position:      10 },
     { id:            'Conditions',
       type:          #LINEITEM_REFERENCE,
       targetElement: '_Condition',
@@ -28,20 +34,24 @@ annotate entity ZC_APPR_RULE with
 
   @UI.lineItem:       [{ position: 10, importance: #HIGH, label: 'Level' }]
   @UI.identification: [{ position: 10, label: 'Level' }]
+  @UI.fieldGroup:     [{ qualifier: 'Main', position: 10, label: 'Level' }]
   @UI.selectionField: [{ position: 10 }]
   approver_level;
 
   @UI.lineItem:       [{ position: 20, importance: #HIGH, label: 'Priority' }]
   @UI.identification: [{ position: 20, label: 'Priority' }]
+  @UI.fieldGroup:     [{ qualifier: 'Main', position: 20, label: 'Priority' }]
   priority;
 
   @UI.lineItem:       [{ position: 30, importance: #HIGH, label: 'Agent Type' }]
   @UI.identification: [{ position: 30, label: 'Agent Type' }]
+  @UI.fieldGroup:     [{ qualifier: 'Main', position: 30, label: 'Agent Type' }]
   @UI.selectionField: [{ position: 20 }]
   agent_type;
 
   @UI.lineItem:       [{ position: 40, importance: #HIGH, label: 'Agent' }]
   @UI.identification: [{ position: 40, label: 'Agent' }]
+  @UI.fieldGroup:     [{ qualifier: 'Main', position: 40, label: 'Agent' }]
   @UI.selectionField: [{ position: 30 }]
   @UI.textArrangement: #TEXT_LAST
   agent_id;
@@ -51,10 +61,12 @@ annotate entity ZC_APPR_RULE with
 
   @UI.lineItem:       [{ position: 50, importance: #HIGH, label: 'Description' }]
   @UI.identification: [{ position: 50, label: 'Description' }]
+  @UI.fieldGroup:     [{ qualifier: 'Main', position: 50, label: 'Description' }]
   rule_description;
 
   @UI.lineItem:       [{ position: 60, importance: #MEDIUM, label: 'Active' }]
   @UI.identification: [{ position: 60, label: 'Active' }]
+  @UI.fieldGroup:     [{ qualifier: 'Main', position: 60, label: 'Active' }]
   @UI.selectionField: [{ position: 40 }]
   is_active;
 
