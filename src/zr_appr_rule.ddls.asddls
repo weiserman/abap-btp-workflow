@@ -5,6 +5,10 @@ define view entity ZR_APPR_RULE
   composition [0..*] of ZR_APPR_CONDITION as _Condition
   association to parent ZR_APPR_OBJ_TYPE as _ObjectType
     on $projection.object_type = _ObjectType.object_type
+  association [0..1] to I_BusinessUserVH as _User
+    on $projection.agent_id = _User.UserID
+  association [0..1] to ZI_APPR_ROLE_VH as _Role
+    on $projection.agent_id = _Role.role_id
 {
   key rule_id,
       object_type,
@@ -28,5 +32,7 @@ define view entity ZR_APPR_RULE
       local_last_changed,
 
       _ObjectType,
-      _Condition
+      _Condition,
+      _User,
+      _Role
 }

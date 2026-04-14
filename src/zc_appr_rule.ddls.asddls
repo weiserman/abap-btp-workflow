@@ -24,6 +24,7 @@ define view entity ZC_APPR_RULE
       agent_type,
 
       @EndUserText.label: 'Agent ID'
+      @ObjectModel.text.element: ['user_name']
       @Consumption.valueHelpDefinition: [{
         entity: { name: 'ZI_APPR_AGENT_VH', element: 'agent_id' },
         additionalBinding: [
@@ -31,6 +32,9 @@ define view entity ZC_APPR_RULE
         ]
       }]
       agent_id,
+
+      @EndUserText.label: 'User Name'
+      _User.PersonFullName as user_name,
 
       @EndUserText.label: 'Active'
       is_active,

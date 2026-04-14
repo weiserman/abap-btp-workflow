@@ -2,7 +2,7 @@
 @UI.headerInfo: {
   typeName: 'Approval Rule',
   typeNamePlural: 'Approval Rules',
-  title: { type: #STANDARD, value: 'rule_description' },
+  title:       { type: #STANDARD, value: 'rule_description' },
   description: { type: #STANDARD, value: 'agent_id' }
 }
 annotate entity ZC_APPR_RULE with
@@ -14,22 +14,55 @@ annotate entity ZC_APPR_RULE with
   @UI.hidden: true
   object_type;
 
-  @UI.lineItem: [{ position: 10, importance: #HIGH, label: 'Level' }]
+  @UI.facet: [
+    { id:       'Main',
+      type:     #IDENTIFICATION_REFERENCE,
+      label:    'Rule Configuration',
+      position: 10 }
+  ]
+
+  @UI.lineItem:       [{ position: 10, importance: #HIGH, label: 'Level' }]
+  @UI.identification: [{ position: 10, label: 'Level' }]
+  @UI.selectionField: [{ position: 10 }]
   approver_level;
 
-  @UI.lineItem: [{ position: 20, importance: #HIGH, label: 'Priority' }]
+  @UI.lineItem:       [{ position: 20, importance: #HIGH, label: 'Priority' }]
+  @UI.identification: [{ position: 20, label: 'Priority' }]
   priority;
 
-  @UI.lineItem: [{ position: 30, importance: #HIGH, label: 'Agent Type' }]
+  @UI.lineItem:       [{ position: 30, importance: #HIGH, label: 'Agent Type' }]
+  @UI.identification: [{ position: 30, label: 'Agent Type' }]
+  @UI.selectionField: [{ position: 20 }]
   agent_type;
 
-  @UI.lineItem: [{ position: 40, importance: #HIGH, label: 'Agent ID' }]
+  @UI.lineItem:       [{ position: 40, importance: #HIGH, label: 'Agent' }]
+  @UI.identification: [{ position: 40, label: 'Agent' }]
+  @UI.selectionField: [{ position: 30 }]
+  @UI.textArrangement: #TEXT_LAST
   agent_id;
 
-  @UI.lineItem: [{ position: 50, importance: #HIGH, label: 'Description' }]
+  @UI.hidden: true
+  user_name;
+
+  @UI.lineItem:       [{ position: 50, importance: #HIGH, label: 'Description' }]
+  @UI.identification: [{ position: 50, label: 'Description' }]
   rule_description;
 
-  @UI.lineItem: [{ position: 60, importance: #MEDIUM, label: 'Active' }]
+  @UI.lineItem:       [{ position: 60, importance: #MEDIUM, label: 'Active' }]
+  @UI.identification: [{ position: 60, label: 'Active' }]
+  @UI.selectionField: [{ position: 40 }]
   is_active;
+
+  @UI.hidden: true
+  created_by;
+
+  @UI.hidden: true
+  created_at;
+
+  @UI.hidden: true
+  last_changed_by;
+
+  @UI.hidden: true
+  last_changed_at;
 
 }
