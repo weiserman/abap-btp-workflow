@@ -1,0 +1,22 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: {
+  typeName: 'Context Field',
+  typeNamePlural: 'Context Fields',
+  title: { type: #STANDARD, value: 'field_name' },
+  description: { type: #STANDARD, value: 'field_value' }
+}
+annotate entity ZC_APPR_INSTANCE_CTX with
+{
+
+  @UI.hidden: true
+  approval_id;
+
+  @UI.lineItem: [{ position: 10, importance: #HIGH, label: 'Field' }]
+  @UI.identification: [{ position: 10, label: 'Field' }]
+  field_name;
+
+  @UI.lineItem: [{ position: 20, importance: #HIGH, label: 'Value' }]
+  @UI.identification: [{ position: 20, label: 'Value' }]
+  field_value;
+
+}

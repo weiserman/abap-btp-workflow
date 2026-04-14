@@ -31,6 +31,6 @@ define root view entity ZC_APPR_OBJ_TYPE
       last_changed_at,
       local_last_changed,
 
-      _Rule : redirected to composition child ZC_APPR_RULE,
-      _Instance
+      _Rule     : redirected to composition child ZC_APPR_RULE,
+      _Instance : redirected to ZC_APPR_INSTANCE
 }

@@ -1,5 +1,6 @@
 @EndUserText.label: 'Approval Workflow Service'
 define service ZSD_APPR_INSTANCE {
-  expose ZC_APPR_INSTANCE as ApprovalInstance;
-  expose ZC_APPR_STEP as ApprovalStep;
+  expose ZC_APPR_INSTANCE     as ApprovalInstance;
+  expose ZC_APPR_STEP         as ApprovalStep;
+  expose ZC_APPR_INSTANCE_CTX as ApprovalContext;
 }

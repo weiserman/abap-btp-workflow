@@ -24,11 +24,16 @@ annotate entity ZC_APPR_OBJ_TYPE with
       targetElement: '_Rule',
       label: 'Approval Chain',
       position: 20 },
+    { id: 'InstanceTable',
+      type: #LINEITEM_REFERENCE,
+      targetElement: '_Instance',
+      label: 'Approval Requests',
+      position: 30 },
     { id: 'Admin',
       type: #FIELDGROUP_REFERENCE,
       targetQualifier: 'Admin',
       label: 'Administration',
-      position: 30 }
+      position: 40 }
   ]
 
   @UI.lineItem: [{ position: 10, importance: #HIGH, label: 'Object Type' }]

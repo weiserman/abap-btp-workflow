@@ -2,8 +2,9 @@
 @EndUserText.label: 'Approval Instance'
 define root view entity ZR_APPR_INSTANCE
   as select from zappr_instance
-  composition [0..*] of ZR_APPR_STEP as _Step
-  association [0..1] to zappr_obj_type as _ObjType
+  composition [0..*] of ZR_APPR_STEP         as _Step
+  composition [0..*] of ZR_APPR_INSTANCE_CTX as _Context
+  association [0..1] to zappr_obj_type       as _ObjType
     on $projection.object_type = _ObjType.object_type
 {
   key approval_id,
@@ -58,5 +59,6 @@ define root view entity ZR_APPR_INSTANCE
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
       local_last_changed,
 
-      _Step
+      _Step,
+      _Context
 }

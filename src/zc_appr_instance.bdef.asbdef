@@ -19,11 +19,20 @@ define behavior for ZC_APPR_INSTANCE alias ApprovalInstance
   use action withdraw;
   use action resubmit;
 
-  use association _Step { create; }
+  use association _Step    { create; }
+  use association _Context { create; with draft; }
 }
 
 define behavior for ZC_APPR_STEP alias ApprovalStep
 {
   use update;
   use association _Instance;
+}
+
+define behavior for ZC_APPR_INSTANCE_CTX alias ApprovalContext
+{
+  use update;
+  use delete;
+
+  use association _Instance { with draft; }
 }

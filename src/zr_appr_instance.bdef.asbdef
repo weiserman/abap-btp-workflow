@@ -65,7 +65,8 @@ authorization master ( global )
 
   validation validateObjectReference on save { create; }
 
-  association _Step { create; }
+  association _Step    { create; }
+  association _Context { create; with draft; }
 
   mapping for zappr_instance
   {
@@ -130,5 +131,32 @@ authorization dependent by _Instance
     performed_at = performed_at;
     step_comment = step_comment;
     local_last_changed = local_last_changed;
+  }
+}
+
+define behavior for ZR_APPR_INSTANCE_CTX alias ApprovalContext
+persistent table zappr_inst_ctx
+draft table zappr_d_ctx
+lock dependent by _Instance
+authorization dependent by _Instance
+
+{
+  field ( readonly )
+    approval_id;
+
+  field ( mandatory : create )
+    field_name,
+    field_value;
+
+  update;
+  delete;
+
+  association _Instance { with draft; }
+
+  mapping for zappr_inst_ctx corresponding
+  {
+    approval_id = approval_id;
+    field_name  = field_name;
+    field_value = field_value;
   }
 }

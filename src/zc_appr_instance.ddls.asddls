@@ -78,5 +78,6 @@ define root view entity ZC_APPR_INSTANCE
 
       local_last_changed,
 
-      _Step : redirected to composition child ZC_APPR_STEP
+      _Step    : redirected to composition child ZC_APPR_STEP,
+      _Context : redirected to composition child ZC_APPR_INSTANCE_CTX
 }

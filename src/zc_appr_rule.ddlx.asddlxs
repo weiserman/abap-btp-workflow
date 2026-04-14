@@ -18,7 +18,12 @@ annotate entity ZC_APPR_RULE with
     { id:       'Main',
       type:     #IDENTIFICATION_REFERENCE,
       label:    'Rule Configuration',
-      position: 10 }
+      position: 10 },
+    { id:            'Conditions',
+      type:          #LINEITEM_REFERENCE,
+      targetElement: '_Condition',
+      label:         'Conditions',
+      position:      20 }
   ]
 
   @UI.lineItem:       [{ position: 10, importance: #HIGH, label: 'Level' }]

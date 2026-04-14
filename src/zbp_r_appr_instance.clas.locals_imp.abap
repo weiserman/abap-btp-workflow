@@ -46,12 +46,13 @@ CLASS lhc_ApprovalInstance DEFINITION INHERITING FROM cl_abap_behavior_handler.
                 iv_approver_role TYPE zappr_instance-approver_role OPTIONAL
                 iv_comment       TYPE string OPTIONAL.
 
-    METHODS resolve_approver_role
-      IMPORTING iv_object_type    TYPE zappr_instance-object_type
-                iv_object_key     TYPE zappr_instance-object_key
-                iv_level          TYPE zappr_rule-approver_level DEFAULT 1
-      EXPORTING ev_approver_role  TYPE zappr_instance-approver_role
-                ev_approver_level TYPE zappr_rule-approver_level.
+    METHODS resolve_via_engine
+      IMPORTING iv_approval_id    TYPE zappr_instance-approval_id
+                iv_object_type    TYPE zappr_instance-object_type
+                iv_level          TYPE i DEFAULT 1
+      EXPORTING ev_agent_id       TYPE zappr_instance-approver_role
+                ev_level          TYPE zappr_instance-approver_level
+                ev_error_text     TYPE string.
 
     METHODS check_user_has_role
       IMPORTING iv_role          TYPE zappr_instance-approver_role
@@ -188,6 +189,35 @@ CLASS lhc_ApprovalInstance IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
+  METHOD resolve_via_engine.
+    CLEAR: ev_agent_id, ev_level, ev_error_text.
+
+    " Read context for this instance directly from the table
+    " (persistent storage is authoritative once the instance is saved)
+    DATA lt_ctx TYPE zcl_appr_rule_engine=>ty_context.
+    SELECT field_name, field_value
+      FROM zappr_inst_ctx
+      WHERE approval_id = @iv_approval_id
+      INTO TABLE @DATA(lt_rows).
+
+    LOOP AT lt_rows INTO DATA(ls_row).
+      INSERT VALUE #(
+        field_name  = ls_row-field_name
+        field_value = ls_row-field_value ) INTO TABLE lt_ctx.
+    ENDLOOP.
+
+    TRY.
+        DATA(ls_result) = zcl_appr_rule_engine=>determine_agent(
+          iv_object_type = iv_object_type
+          iv_level       = iv_level
+          it_context     = lt_ctx ).
+        ev_agent_id = ls_result-agent_id.
+        ev_level    = iv_level.
+      CATCH zcx_appr_no_rule_found INTO DATA(lx).
+        ev_error_text = lx->get_text( ).
+    ENDTRY.
+  ENDMETHOD.
+
   METHOD submit.
     READ ENTITIES OF zr_appr_instance IN LOCAL MODE
       ENTITY ApprovalInstance ALL FIELDS
@@ -195,18 +225,19 @@ CLASS lhc_ApprovalInstance IMPLEMENTATION.
       RESULT DATA(lt).
 
     LOOP AT lt INTO DATA(i).
-      resolve_approver_role(
-        EXPORTING iv_object_type = i-object_type
-                  iv_object_key  = i-object_key
+      resolve_via_engine(
+        EXPORTING iv_approval_id = i-approval_id
+                  iv_object_type = i-object_type
                   iv_level       = 1
-        IMPORTING ev_approver_role  = DATA(lv_role)
-                  ev_approver_level = DATA(lv_lvl) ).
+        IMPORTING ev_agent_id    = DATA(lv_agent)
+                  ev_level       = DATA(lv_lvl)
+                  ev_error_text  = DATA(lv_err) ).
 
-      IF lv_role IS INITIAL.
+      IF lv_err IS NOT INITIAL.
         APPEND VALUE #( %tky = i-%tky ) TO failed-approvalinstance.
         APPEND VALUE #( %tky = i-%tky
           %msg = new_message_with_text(
-            text     = 'No approval rule found for this object type'
+            text     = lv_err
             severity = if_abap_behv_message=>severity-error )
         ) TO reported-approvalinstance.
         CONTINUE.
@@ -218,7 +249,7 @@ CLASS lhc_ApprovalInstance IMPLEMENTATION.
           WITH VALUE #( (
             %tky           = i-%tky
             current_status = cs_status-submitted
-            approver_role  = lv_role
+            approver_role  = lv_agent
             approver_level = lv_lvl ) )
         REPORTED DATA(rep).
 
@@ -226,7 +257,7 @@ CLASS lhc_ApprovalInstance IMPLEMENTATION.
         iv_approval_id   = i-approval_id
         iv_from_status   = cs_status-draft
         iv_to_status     = cs_status-submitted
-        iv_approver_role = lv_role ).
+        iv_approver_role = lv_agent ).
     ENDLOOP.
 
     READ ENTITIES OF zr_appr_instance IN LOCAL MODE
@@ -271,23 +302,24 @@ CLASS lhc_ApprovalInstance IMPLEMENTATION.
       ENDIF.
 
       DATA(lv_nxt) = i-approver_level + 1.
-      resolve_approver_role(
-        EXPORTING iv_object_type = i-object_type
-                  iv_object_key  = i-object_key
+      resolve_via_engine(
+        EXPORTING iv_approval_id = i-approval_id
+                  iv_object_type = i-object_type
                   iv_level       = lv_nxt
-        IMPORTING ev_approver_role  = DATA(lv_nr)
-                  ev_approver_level = DATA(lv_nl) ).
+        IMPORTING ev_agent_id    = DATA(lv_next_agent)
+                  ev_level       = DATA(lv_next_lvl)
+                  ev_error_text  = DATA(lv_err) ).
 
       GET TIME STAMP FIELD DATA(lv_ts).
 
-      IF lv_nr IS NOT INITIAL.
+      IF lv_err IS INITIAL AND lv_next_agent IS NOT INITIAL.
         MODIFY ENTITIES OF zr_appr_instance IN LOCAL MODE
           ENTITY ApprovalInstance
             UPDATE FIELDS ( approver_role approver_level )
             WITH VALUE #( (
               %tky           = i-%tky
-              approver_role  = lv_nr
-              approver_level = lv_nl ) )
+              approver_role  = lv_next_agent
+              approver_level = lv_next_lvl ) )
           REPORTED DATA(rn).
         create_step(
           iv_approval_id   = i-approval_id
@@ -420,12 +452,23 @@ CLASS lhc_ApprovalInstance IMPLEMENTATION.
       RESULT DATA(lt).
 
     LOOP AT lt INTO DATA(i).
-      resolve_approver_role(
-        EXPORTING iv_object_type = i-object_type
-                  iv_object_key  = i-object_key
+      resolve_via_engine(
+        EXPORTING iv_approval_id = i-approval_id
+                  iv_object_type = i-object_type
                   iv_level       = 1
-        IMPORTING ev_approver_role  = DATA(lv_role)
-                  ev_approver_level = DATA(lv_lvl) ).
+        IMPORTING ev_agent_id    = DATA(lv_agent)
+                  ev_level       = DATA(lv_lvl)
+                  ev_error_text  = DATA(lv_err) ).
+
+      IF lv_err IS NOT INITIAL.
+        APPEND VALUE #( %tky = i-%tky ) TO failed-approvalinstance.
+        APPEND VALUE #( %tky = i-%tky
+          %msg = new_message_with_text(
+            text     = lv_err
+            severity = if_abap_behv_message=>severity-error )
+        ) TO reported-approvalinstance.
+        CONTINUE.
+      ENDIF.
 
       MODIFY ENTITIES OF zr_appr_instance IN LOCAL MODE
         ENTITY ApprovalInstance
@@ -434,7 +477,7 @@ CLASS lhc_ApprovalInstance IMPLEMENTATION.
           WITH VALUE #( (
             %tky             = i-%tky
             current_status   = cs_status-submitted
-            approver_role    = lv_role
+            approver_role    = lv_agent
             approver_level   = lv_lvl
             decided_by       = ''
             decided_at       = '00000000000000'
@@ -445,7 +488,7 @@ CLASS lhc_ApprovalInstance IMPLEMENTATION.
         iv_approval_id   = i-approval_id
         iv_from_status   = i-current_status
         iv_to_status     = cs_status-submitted
-        iv_approver_role = lv_role ).
+        iv_approver_role = lv_agent ).
     ENDLOOP.
 
     READ ENTITIES OF zr_appr_instance IN LOCAL MODE
@@ -479,16 +522,6 @@ CLASS lhc_ApprovalInstance IMPLEMENTATION.
             performed_by  = lv_user
             performed_at  = lv_ts
             step_comment  = iv_comment ) ) ) ).
-  ENDMETHOD.
-
-  METHOD resolve_approver_role.
-    CLEAR: ev_approver_role, ev_approver_level.
-    SELECT SINGLE FROM zappr_rule
-      FIELDS agent_id, approver_level
-      WHERE object_type    = @iv_object_type
-        AND is_active      = @abap_true
-        AND approver_level = @iv_level
-      INTO ( @ev_approver_role, @ev_approver_level ).
   ENDMETHOD.
 
 ENDCLASS.
