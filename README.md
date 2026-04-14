@@ -2,10 +2,9 @@
 
 **Package:** `ZWORKFLOW`
 **Environment:** BTP ABAP Cloud (SAP BTP, ABAP environment)
-**Stability:** Early-stage MVP — works end-to-end, still rough around some edges (see [Open items](#open-items))
+**Stability:** Early-stage MVP — works end-to-end, still rough around some edges.
 
-For a phase-by-phase build history and gotchas, see [`local-reference/CHANGELOG-rules-engine.md`](local-reference/CHANGELOG-rules-engine.md). For a complete object inventory, see [`local-reference/INVENTORY.md`](local-reference/INVENTORY.md).
-
+For a phase-by-phase build history and gotchas, see [`local-reference/CHANGELOG-rules-engine.md`](local-reference/CHANGELOG-rules-engine.md). 
 ---
 
 ## 1. Purpose
@@ -576,9 +575,3 @@ Known gaps for future phases:
 - **Real ProcurementPlan BO as a reference consumer** — the `ZCL_APPR_E2E_DEMO` fakes it via direct inserts. A real BO with its own draft/state/UI would be a useful reference implementation
 
 ---
-
-## Related documents
-
-- **[`local-reference/INVENTORY.md`](local-reference/INVENTORY.md)** — complete object inventory with per-object notes
-- **[`local-reference/CHANGELOG-rules-engine.md`](local-reference/CHANGELOG-rules-engine.md)** — build history by phase, with gotchas and decisions
-- **[`CLAUDE.md`](CLAUDE.md)** — project rules and local-reference refresh policy
