@@ -4,7 +4,6 @@
 **Environment:** BTP ABAP Cloud (SAP BTP, ABAP environment)
 **Stability:** Early-stage MVP — works end-to-end, still rough around some edges.
 
-For a phase-by-phase build history and gotchas, see [`local-reference/CHANGELOG-rules-engine.md`](local-reference/CHANGELOG-rules-engine.md). 
 ---
 
 ## 1. Purpose
